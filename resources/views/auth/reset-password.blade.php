@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <x-slot name="addOnCss"></x-slot>
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
@@ -45,4 +46,5 @@
             </div>
         </form>
     </x-auth-card>
+    <x-slot name="addOnJs"></x-slot>
 </x-guest-layout>

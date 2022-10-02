@@ -23,7 +23,7 @@ class User extends Authenticatable
         'lname',
         'email',
         'password',
-        'location',
+        'checked_agreement',
         'phone',
         'avatar',
         'role',

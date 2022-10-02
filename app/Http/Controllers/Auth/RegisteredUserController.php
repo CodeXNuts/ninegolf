@@ -38,12 +38,13 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'fname' => ['required', 'string', 'max:255'],
             'lname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'location' => ['required','max:255'],
+            'checkAgreement' => ['required',Rule::in('on')],
             'phone' => ['required','numeric','digits:10'],
             // 'role' => ['required','numeric', Rule::in(1,2)],
             'image'=>'required | mimetypes:image/bmp,image/gif,image/png,image/jpeg,image/jpg,image/JPG,image/webp | max:50048'
@@ -55,12 +56,13 @@ class RegisteredUserController extends Controller
         }
 
 
+
         $user = User::create([
             'fname' => $request->fname,
             'lname' => $request->lname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'location' => $request->location,
+            'checked_agreement' => (!empty($request->checkAgreement) && ($request->checkAgreement =='on')) ? true : false,
             'phone' => $request->phone,
             'avatar' => $fileData['filePath'] ?? null
         ]);
