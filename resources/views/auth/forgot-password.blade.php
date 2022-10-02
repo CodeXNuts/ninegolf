@@ -49,6 +49,8 @@
             <div class="row">
                 <div class="col-lg-7 col-md-7">
                     <h2>Forgot password?</h2>
+                    <!-- Session Status -->
+                    <x-auth-session-status class="mb-4" :status="session('status')" />
                     <!-- Validation Errors -->
                     <x-auth-validation-errors style="color: red" class="mb-4" :errors="$errors" />
                     <form method="POST"  action="{{ route('password.email') }}">

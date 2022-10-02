@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone');
-            $table->string('location');
+            $table->boolean('checked_agreement');
             $table->boolean('is_active')->default(true);
             $table->softDeletes();
             //$table->string('role'); // 1 - seller , 2 - customer

@@ -13,7 +13,7 @@
                 <input type="password" name="password" placeholder="Enter Password">
 
             </div>
-            <a href="#">Forgot Password?</a>
+            <a href="{{ route('password.request') }}">Forgot Password?</a>
 
         </div>
         

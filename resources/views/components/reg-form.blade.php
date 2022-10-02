@@ -16,7 +16,7 @@
         <label>Profile image</label>
         <div class="row">
             <div class="col-md-12">
-                <img src="https://via.placeholder.com/150" id="file-dp-1-preview" style="" class="" alt="...">
+                <img src="https://via.placeholder.com/150" id="file-dp-1-preview" style="width: 200px;height: 200px;" class="rounded-circle" alt="...">
             </div>
             <div class="col-md-12">
                 <input id="image" accept="image/*" type="file" name="image" onchange="showPreview();" :value="old('image')"
@@ -36,10 +36,7 @@
         <label>Phone</label>
         <input type="tel" name="phone" value="{{ old('phone') }}" class="phoneNum" placeholder="Your phone number">
     </div>
-    <div class="form-group">
-        <label>Location</label>
-        <input type="text" name="location" placeholder="Enter your location" value="{{ old('location') }}">
-    </div>
+    
     <div class="form-group">
         <label>Password</label>
         <input type="password" name="password" placeholder="password">
@@ -48,10 +45,12 @@
         <label>Confirm Password</label>
         <input type="password" placeholder="Confirm password" name="password_confirmation">
     </div>
-    <button type="submit" class="btn signupbtn">Sign up</button>
+
     <div class="form-group check">
-        <input type="checkbox" required>
+        <input type="checkbox" name="checkAgreement" required>
         I agree with the terms and conditions
     </div>
+    <button type="submit" class="btn signupbtn">Sign up</button>
+    
     <p>Already have an account? <b><a href="#">Log in</a> </b></p>
 </form>
