@@ -36,7 +36,7 @@
     </div>
     <div class="row" style="margin-top: 10px">
         <div class="col-xs-12">
-            <button class="btn btn-primary btn-lg btn-block payBtn"  data-target={{ route('order.create') }} type="submit">Pay Now (${{ $amount }})</button>
+            <button class="btn btn-primary btn-lg btn-block payBtn"  data-target={{ route('user.order.create') }} type="submit">Pay Now (${{ $amount }})</button>
         </div>
     </div>
 </form>

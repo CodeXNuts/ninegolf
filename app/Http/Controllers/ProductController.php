@@ -131,7 +131,7 @@ class ProductController extends Controller
         return view('product.create.index');
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
 
         $this->authorize('create', 'App\Club');

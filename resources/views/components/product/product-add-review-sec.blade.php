@@ -3,7 +3,7 @@
     @foreach ($errors->all() as $error)
                 <span style="color: red">{{ $error }}</span>
     @endforeach
-    <form action="{{ route('product.review.create',['club'=>$club->slug]) }}" method="POST" id="clubreviewForm">
+    <form action="{{ route('user.club.review.create',['club'=>$club->slug]) }}" method="POST" id="clubreviewForm">
         @csrf
         <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
             <input type="hidden" name="inputRating" id="inputRating" value="5" style="display: none">

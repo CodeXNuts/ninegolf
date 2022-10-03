@@ -5,7 +5,7 @@
             <!-- begin invoice-company -->
             <div class="invoice-company text-inverse f-w-600">
                 <span class="pull-right hidden-print">
-                    <a href="{{ route('pdf.download',['order'=>$orderData->id]) }}" class="btn btn-sm btn-white m-b-10 p-l-5"><i
+                    <a href="{{ route('user.order.invoice.download',['order'=>$orderData->id]) }}" class="btn btn-sm btn-white m-b-10 p-l-5"><i
                             class="fa fa-file t-plus-1 text-danger fa-fw fa-lg"></i> Download PDF</a>
                     <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i
                             class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>

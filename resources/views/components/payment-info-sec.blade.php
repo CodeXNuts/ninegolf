@@ -8,7 +8,7 @@
             <div class="payStatCls">
                 <img src="{{ asset('user/images/payment-status-active.png') }}" alt=""> 
             <h4>Your payment account status: <span class="badge badge-pill badge-success" style="background: chartreuse">Active</span>
-                <i class='fas fa-sync-alt' id="sync" title="Sync data with Stripe" data-target="{{ route('payment.account.sync',['userStripeConnectedAccount'=>$stripeAccountInfo->id]) }}" style="margin-left: 20px;
+                <i class='fas fa-sync-alt' id="sync" title="Sync data with Stripe" data-target="{{ route('user.paymentAccount.sync',['userStripeConnectedAccount'=>$stripeAccountInfo->id]) }}" style="margin-left: 20px;
                 cursor: pointer;"></i>
             </h4>
             <h3 style="padding-bottom: 20px">You can always update your account info from here</h3>
@@ -17,7 +17,7 @@
             @else
             <div class="payStatCls">
                 <h4>Your payment account status: <span class="badge badge-pill badge-success" style="background: #e1c29e">In-active</span>
-                    <i class='fas fa-sync-alt' id="sync" title="Sync data with Stripe" data-target="{{ route('payment.account.sync',['userStripeConnectedAccount'=>$stripeAccountInfo->id]) }}" style="margin-left: 20px;
+                    <i class='fas fa-sync-alt' id="sync" title="Sync data with Stripe" data-target="{{ route('user.paymentAccount.sync',['userStripeConnectedAccount'=>$stripeAccountInfo->id]) }}" style="margin-left: 20px;
                         cursor: pointer;"></i>
                 </h4>
             <h3 style="padding-bottom: 20px"><span style="color: red">***</span>Please provide the below informaton in
@@ -451,7 +451,7 @@
                     </div>
                     <div class="col-md-6 col-lg-6 text-end">
                         
-                        <input type="button" data-targetURI="{{ route('payment.account.update',['userStripeConnectedAccount'=>$stripeAccountInfo->id]) }}" name="finalSubBtn" id="finalSubBtn" style="margin-top: 20px;"
+                        <input type="button" data-targetURI="{{ route('user.paymentAccount.update',['userStripeConnectedAccount'=>$stripeAccountInfo->id]) }}" name="finalSubBtn" id="finalSubBtn" style="margin-top: 20px;"
                              class=" btn btn-primary" value="Update">
                     </div>
 
@@ -465,7 +465,7 @@
     @else
         <p style="line-height: 23px"> You don't have payment setup yet. Activate payments to receive payment for your
             products.</p>
-        <form action="{{ route('payment.account.create') }}" id="paymentCreationForm" method="POST">
+        <form action="{{ route('user.paymentAccount.create') }}" id="paymentCreationForm" method="POST">
             @csrf
         </form>
         <a href="javascript:void(0)" class="btn btn-primary"

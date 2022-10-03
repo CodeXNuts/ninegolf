@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // dd($request->file('image')->getClientOriginalExtension());
         $request->validate([
             'fname' => ['required', 'string', 'max:255'],
             'lname' => ['required', 'string', 'max:255'],
@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
             'checkAgreement' => ['required',Rule::in('on')],
             'phone' => ['required','numeric','digits:10'],
             // 'role' => ['required','numeric', Rule::in(1,2)],
-            'image'=>'required | mimetypes:image/bmp,image/gif,image/png,image/jpeg,image/jpg,image/JPG,image/webp | max:50048'
+            'image'=>'required | image | max:50048'
 
         ]);
 
