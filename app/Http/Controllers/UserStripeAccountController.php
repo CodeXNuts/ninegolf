@@ -14,12 +14,12 @@ class UserStripeAccountController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web');
     }
     public function create()
     {
 
-        $checkIfAccountExists = UserStripeConnectedAccount::where(['user_id' => auth()->id()])->first();
+        $checkIfAccountExists = UserStripeConnectedAccount::where(['user_id' => auth('web')->id()])->first();
 
         if (!empty($checkIfAccountExists)) {
             throw new ModelNotFoundException('400 Bad Request', 400);
@@ -50,22 +50,20 @@ class UserStripeAccountController extends Controller
     {
 
         if (!empty($userStripeConnectedAccount->id) && !empty($userStripeConnectedAccount->stripe_connected_account)) {
-            
+
             try {
-                $connectedAcDetails = (new Stripe())->viewConnectedAccount($userStripeConnectedAccount->stripe_connected_account);
-                
-;            if (!empty($connectedAcDetails['data']['capabilities']['transfers']) && ($connectedAcDetails['data']['capabilities']['transfers'] == 'active') && (!empty($connectedAcDetails['data']['capabilities']['card_payments'])) && (($connectedAcDetails['data']['capabilities']['card_payments']) == 'active') &&(!empty($connectedAcDetails['data']['charges_enabled'])) && ($connectedAcDetails['data']['charges_enabled'] == true)) {
-                
-                $userStripeConnectedAccount->is_completed = true;
-                $userStripeConnectedAccount->save();
-            } 
+                $connectedAcDetails = (new Stripe())->viewConnectedAccount($userStripeConnectedAccount->stripe_connected_account);;
+                if (!empty($connectedAcDetails['data']['capabilities']['transfers']) && ($connectedAcDetails['data']['capabilities']['transfers'] == 'active') && (!empty($connectedAcDetails['data']['capabilities']['card_payments'])) && (($connectedAcDetails['data']['capabilities']['card_payments']) == 'active') && (!empty($connectedAcDetails['data']['charges_enabled'])) && ($connectedAcDetails['data']['charges_enabled'] == true)) {
 
-            $res = [
-                'key' => 'success',
-                'msg' => 'Synced sucessfuly',
-                'data' => $userStripeConnectedAccount
-            ];
+                    $userStripeConnectedAccount->is_completed = true;
+                    $userStripeConnectedAccount->save();
+                }
 
+                $res = [
+                    'key' => 'success',
+                    'msg' => 'Synced sucessfuly',
+                    'data' => $userStripeConnectedAccount
+                ];
             } catch (Exception $e) {
                 $res = [
                     'key' => 'fail',
@@ -74,7 +72,6 @@ class UserStripeAccountController extends Controller
             }
 
             return $res;
-
         }
     }
 

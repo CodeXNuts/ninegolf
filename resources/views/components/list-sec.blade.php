@@ -7,7 +7,7 @@
 
         </form>
         <ul class="views">
-            <li><a href="{{ route('product.create') }}"><img src="{{ asset('user/images/plus.svg') }}"> Create
+            <li><a href="{{ route('user.club.create') }}"><img src="{{ asset('user/images/plus.svg') }}"> Create
                     Listing</a></li>
             <li> <a href="javascript:void(0)" data-view="list" class="viewType"><i class="fas fa-list-ul"></i></a></li>
             <li> <a href="javascript:void(0)" data-view="grid" class="viewType"><i class="fas fa-th-large"></i></a></li>
@@ -102,7 +102,7 @@
                 @endif
             @endforeach
         @else
-            <p> You don't have any clubs listed yet.</p> <a href="{{ route('product.create') }}">Create one? </a>
+            <p> You don't have any clubs listed yet.</p> <a href="{{ route('user.club.create') }}">Create one? </a>
         @endif
 
     </div>

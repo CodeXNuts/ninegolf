@@ -59,20 +59,5 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
-
-    Route::get('profile',[AuthenticatedSessionController::class,'view'])->name('profile');
-    Route::put('profile/{user}/update',[AuthenticatedSessionController::class,'update'])->name('profile.update');
-    Route::get('/list-my-club',[ProductController::class,'getCreateClubView'])->name('product.create');
-    Route::post('/list-my-club',[ProductController::class,'create'])->name('product.create');
-    Route::post('/profile/payments',[UserStripeAccountController::class,'create'])->name('payment.account.create');
-    Route::post('/profile/payments/{userStripeConnectedAccount}/update',[UserStripeAccountController::class,'update'])->name('payment.account.update');
-    Route::post('/profile/payments/{userStripeConnectedAccount}/sync',[UserStripeAccountController::class,'syncAc'])->name('payment.account.sync');
-    Route::post('/order',[OrderController::class,'create'])->name('order.create');
-    Route::post('/order/auth',[OrderController::class,'checkAuth'])->name('order.checkAuth');
-    Route::get('/order/{order}',[OrderController::class,'view'])->name('order.view');
-    Route::get('/order/{order}/pdf',[OrderController::class,'generatePDF'])->name('pdf.download');
-    Route::post('/product/{club:slug}/review',[ClubRatingController::class,'create'])->name('product.review.create');
-    Route::post('/product/{club:slug}/review/{clubRating}/reply',[ClubRatingReplyController::class,'create'])->name('product.review.reply.create');
-
     
 });

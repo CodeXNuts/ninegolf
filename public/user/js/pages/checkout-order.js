@@ -190,7 +190,11 @@ function procceedToOrder() {
                     {
                         if(response.targetURI !=='' && response.targetURI!==undefined && response.targetURI.match(urlRegex))
                         {
-                            // window.location.href = targetURI;
+                            Toast.fire({
+                                icon: "success",
+                                title:response.msg ?? 'Order has been placed successfully'
+                            });
+                            window.location.href = response.targetURI;
 
                         }
                         else

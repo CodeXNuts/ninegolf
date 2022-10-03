@@ -92,7 +92,7 @@ class OrderController extends Controller
                                                     'key' => 'success',
                                                     'msg' => 'Order has been placed successfully. Successful payment',
                                                     'code' => 200,
-                                                    'targetURI' => route('order.view', ['order' => $createdOrder->id])
+                                                    'targetURI' => route('user.order.view', ['order' => $createdOrder->id])
                                                 ];
                                             } else {
                                                 $orderState = 0;
@@ -111,7 +111,7 @@ class OrderController extends Controller
                                                     'key' => 'success',
                                                     'msg' => 'Order is pending. Un-successful payment',
                                                     'code' => 200,
-                                                    'targetURI' => route('order.view', ['order' => $createdOrder->id])
+                                                    'targetURI' => route('user.order.view', ['order' => $createdOrder->id])
                                                 ];
                                             }
 
@@ -129,7 +129,7 @@ class OrderController extends Controller
                                                 'key' => 'fail',
                                                 'msg' => 'Payment failed, try again',
                                                 'code' => 200,
-                                                'targetURI' => route('order.view', ['order' => $createdOrder->id])
+                                                'targetURI' => route('user.order.view', ['order' => $createdOrder->id])
                                             ];
                                         }
                                     } else {
@@ -137,7 +137,7 @@ class OrderController extends Controller
                                             'key' => 'fail',
                                             'msg' => 'Payment failed, try again',
                                             'code' => 200,
-                                            'targetURI' => route('order.view', ['order' => $createdOrder->id])
+                                            'targetURI' => route('user.order.view', ['order' => $createdOrder->id])
                                         ];
                                     }
                                 } else {

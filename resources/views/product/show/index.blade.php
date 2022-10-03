@@ -55,7 +55,7 @@
                     <div class="ecommbutt">
                         <ul class="prodActionBtn">
                             @if (!empty($isInCart) && $isInCart == 'true')
-                                <li><a href="{{ route('cart') }}" class="" style="background-color: yellowgreen"
+                                <li><a href="{{ route('cart.view') }}" class="" style="background-color: yellowgreen"
                                         data-cart-URI="{{ route('cart.add') }}" data-prod="{{ $club->id }}">Go to
                                         Cart</a></li>
                             @else

@@ -21,7 +21,7 @@
         <input type="button" name="next" class="btn previous" style="margin-left: initial !important;"
             value="Prev" />
 
-        <input type="button" name="next" class="btn uploadTheProduct" value="Complete" />
+        <input type="button" name="next" data-target="{{ route('user.club.store') }}" class="btn uploadTheProduct" value="Complete" />
     </div>
 
     

@@ -53,7 +53,7 @@
                 @can('create', ['App\ClubRatingReply', $club])
                     <div class="card-footer py-3 border-0 replyBox" style="display: none" style="background-color: #f8f9fa;">
                         <form
-                            action="{{ route('product.review.reply.create', ['club' => $club->slug, 'clubRating' => $eachRating->id]) }}"
+                            action="{{ route('user.club.review.reply.create', ['club' => $club->slug, 'clubRating' => $eachRating->id]) }}"
                             method="POST" id="clubReviewReplyForm">
                             @csrf
 

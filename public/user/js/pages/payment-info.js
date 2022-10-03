@@ -418,14 +418,14 @@ function syncWithStripe(target)
                 {
                     var appentableHtml = 
                     '<img src="/user/images/payment-status-active.png" alt="">'+
-                    '<h4>Your payment account status: <span class="badge badge-pill badge-success" style="background: chartreuse">Active</span><i class="fas fa-sync-alt" id="sync" title="Sync data with Stripe" data-target="/profile/payments/'+response.data.id+'/sync" style="margin-left: 20px;'+
+                    '<h4>Your payment account status: <span class="badge badge-pill badge-success" style="background: chartreuse">Active</span><i class="fas fa-sync-alt" id="sync" title="Sync data with Stripe" data-target="/user/paymentAcoount/'+response.data.id+'/sync" style="margin-left: 20px;'+
                     'cursor: pointer;"></i></h4>'+
                     '<h3 style="padding-bottom: 20px">You can always update your account info from here</h3>';
                 }
                 else
                 {
                     var appentableHtml = 
-                '<h4>Your payment account status: <span class="badge badge-pill badge-success" style="background: #e1c29e">In-active</span><i class="fas fa-sync-alt" id="sync" title="Sync data with Stripe" data-target="/profile/payments/'+response.data.id+'/sync" style="margin-left: 20px;'+
+                '<h4>Your payment account status: <span class="badge badge-pill badge-success" style="background: #e1c29e">In-active</span><i class="fas fa-sync-alt" id="sync" title="Sync data with Stripe" data-target="/user/paymentAcoount/'+response.data.id+'/sync" style="margin-left: 20px;'+
                 'cursor: pointer;"></i></h4>'+
                 '<h3 style="padding-bottom: 20px"><span style="color: red">***</span>Please provide the below informaton in'+
                     'order to active your payment account</h3>';
@@ -441,7 +441,7 @@ function syncWithStripe(target)
                         showConfirmButton: false,
                         showCloseButton:true,
                         icon: 'warning',
-                        title: '<a href="/profile?sec=payment-info">Hey &#128533, You have not yet activated your payment account. Your product will not be visibile untill you complete the payment account</a>'
+                        title: '<a href="/user/profile?sec=payment-info">Hey &#128533, You have not yet activated your payment account. Your product will not be visibile untill you complete the payment account</a>'
                     });
 
                 }

@@ -247,6 +247,17 @@ $(document).on("click", ".uploadTheProduct", function () {
         addresses.push($(elem).val());
     });
 
+    var targetURI = $(this).attr('data-target');
+    var urlRegex = new RegExp(
+        "^(https?:\\/\\/)?" + // validate protocol
+            "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
+            "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
+            "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+            "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+            "(\\#[-a-z\\d_]*)?$",
+        "i"
+    );
+
     if (listType == "set") {
         if (setName == "" || setName == undefined) {
             Toast.fire({
@@ -447,6 +458,14 @@ $(document).on("click", ".uploadTheProduct", function () {
         // addOnImagesArr.push({id: tempProdId , addOnImages: addOnImages});
     });
 
+    if(targetURI == '' || targetURI==undefined || (!targetURI.match(urlRegex)))
+    {
+        Toast.fire({
+            icon: "error",
+            title: "Something went wrong!! Repload the page and try again",
+        });
+    }
+
     if (hasError) {
         return;
     }
@@ -487,7 +506,7 @@ $(document).on("click", ".uploadTheProduct", function () {
 
             $.ajax({
                 type: "POST",
-                url: "/list-my-club",
+                url: targetURI,
                 data: formData,
                 dataType: "json",
                 contentType: false,
@@ -502,7 +521,7 @@ $(document).on("click", ".uploadTheProduct", function () {
                             icon: "success",
                             title: response.msg ?? "Success",
                         });
-                        window.location.href = "/profile?sec=club-list";
+                        window.location.href = "/user/profile?sec=club-list";
                     } else {
                         Toast.fire({
                             icon: "error",

@@ -270,7 +270,7 @@ class CartController extends Controller
         if (!empty($crtContents)) {
             $crtContents->cartItems->filter(
                 fn ($k) =>
-                $k->delete = route('cartItem.remove', ['cartItem' => $k->id])
+                $k->delete = route('cart.cartItem.remove', ['cartItem' => $k->id])
             );
 
             foreach ($crtContents->cartItems as $item) {

@@ -26,20 +26,20 @@
                         </nav>
                     </div>
                     <ul class="cart">
-                        @auth
+                        @auth('web')
                             <li class="dropdown"><a href="#"><img
-                                        src="{{ auth()->user()->avatar ? URL('/' . auth()->user()->avatar) : '' }}"
+                                        src="{{ auth('web')->user()->avatar ? URL('/' . auth('web')->user()->avatar) : '' }}"
                                         alt="" class="profile"></a>
                                 <ul class="nav-dropdown">
                                     <li>
-                                        <a href="{{ route('profile') }}">
+                                        <a href="{{ route('user.profile.view') }}">
 
                                             View Profile
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('profile',['sec'=>'club-list']) }}">
-
+                                        <a href="{{ route('user.profile.view',['sec'=>'club-list']) }}">
+                                        
                                             Manage Listing
                                         </a>
                                     </li>

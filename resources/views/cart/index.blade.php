@@ -26,7 +26,7 @@
                         @endphp
                         @foreach ($crtContents->cartItems as $item)
                             <div class="listbox cartItem" data-identifier="{{ $item->id ?? null }}"
-                                data-targetURI="{{ route('cartItem.remove', ['cartItem' => $item->id]) }}">
+                                data-targetURI="{{ route('cart.cartItem.remove', ['cartItem' => $item->id]) }}">
                                 <img src="{{ asset('user/images/drv.png') }}" alt="">
                                 {{-- <img src="{{ URL('/'.$item->club->clubLists[0]->clubImages[0]->image_path) }}" alt=""> --}}
 
@@ -130,7 +130,7 @@
                             </tbody>
                         </table>
 
-                        <a href="javascript:void(0)" data-target-auth="{{ route('order.checkAuth') }}" data-target="{{ auth()->check() ? route('order.create') : '' }}" id="checkout"
+                        <a href="javascript:void(0)" data-target-auth="{{ route('user.order.checkAuth') }}" data-target="{{ auth('web')->check() ? route('user.order.create') : '' }}" id="checkout"
                             class="epf">Checkout</a>
 
                     </div>
