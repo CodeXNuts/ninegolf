@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClubRatingController;
+use App\Http\Controllers\ClubRatingReplyController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserProfileController;
