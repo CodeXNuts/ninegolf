@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderPlacedPaymentSuccess;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderDetails;
@@ -39,7 +40,7 @@ class OrderController extends Controller
 
     public function checkAuth()
     {
-        return ['res' => auth()->check()];
+        return ['res' => auth('web')->check()];
     }
 
     public function create(Request $request)
@@ -51,7 +52,7 @@ class OrderController extends Controller
                 'key' => 'fail',
                 'msg' => ''
             ];
-            $authID = auth()->id();
+            $authID = auth('web')->id();
             if (!empty($authID)) {
                 $cart = (new CartController())->getCart();
 
@@ -67,6 +68,7 @@ class OrderController extends Controller
                             if (!empty($orderDetailsTblPayload)) {
 
                                 $isOrderDetailsInserted = $this->createOrderDetailsTblData($orderDetailsTblPayload);
+                                $orderDetails = $this->getOrderDetails($createdOrder);
 
                                 if ($isOrderDetailsInserted) {
                                     if (!empty($request->stripeToken)) {
@@ -94,6 +96,10 @@ class OrderController extends Controller
                                                     'code' => 200,
                                                     'targetURI' => route('user.order.view', ['order' => $createdOrder->id])
                                                 ];
+
+
+                                                $payoutEventPayload = $this->preparePayoutEventPayload($orderDetails);
+                                                event(new OrderPlacedPaymentSuccess($payoutEventPayload));
                                             } else {
                                                 $orderState = 0;
 
@@ -121,7 +127,7 @@ class OrderController extends Controller
                                                 $orderTxnTbldata = $this->createOrderTxnTblData($orderTxnTblPayload);
                                             }
 
-                                            //update the order $table
+
                                             $createdOrder->order_state = $orderState;
                                             $createdOrder->save();
                                         } else {
@@ -186,7 +192,7 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        $orderData = Order::with(['user', 'orderDetails', 'orderDetails.club', 'orderDetails.club.user', 'orderDetails.clubAddress', 'orderTransaction'])->find($order->id);
+        $orderData = $this->getOrderDetails($order);
 
         $orderData->order_state = $this->orderState[$orderData->order_state] ?? $this->orderState[0];
         if (!empty($orderData->orderTransaction->transaction_type)) {
@@ -225,6 +231,13 @@ class OrderController extends Controller
         return Order::orderBy('created_at', 'DESC')->first();
     }
 
+    public function getOrderDetails($order)
+    {
+        if (!empty($order->id)) {
+            return Order::with(['user', 'orderDetails', 'orderDetails.club', 'orderDetails.club.user', 'orderDetails.clubAddress', 'orderTransaction'])->find($order->id);
+        }
+    }
+
     private function generateOrderNr($latestOrderId)
     {
         if ($latestOrderId !== null && is_numeric($latestOrderId)) {
@@ -246,7 +259,7 @@ class OrderController extends Controller
 
             return [
                 'orderSerial' => $orderSerial,
-                'userId' => auth()->id(),
+                'userId' => auth('web')->id(),
                 'amount' => $this->getOrderTotalAmountFromCartData($data),
                 'status' => 'not pickedup yet',
                 'orderState' => 0
@@ -378,6 +391,51 @@ class OrderController extends Controller
         ];
     }
 
+    public function preparePayoutEventPayload($data)
+    {
+        $payload = [];
+
+        if (!empty($data->orderDetails)) {
+            foreach ($data->orderDetails as $item) {
+                $sellerId = $item->club->user_id ?? null;
+                if (!empty($sellerId)) {
+                    $userPayACData = (new UserStripeAccountController())->getUserConnectedStripeAccount($sellerId);
+                    $clubId = $item->club->id ?? null;
+
+                    $amount = (!empty($item->club_amount) && (is_numeric($item->club_amount)) && (!empty($item->days)) && (is_numeric($item->days))) ?
+                        $this->getTotalForEachItem($item->club_amount, $item->days) : null;
+
+                    if (!empty($amount) && is_numeric($amount) && !empty($userPayACData->stripe_connected_account)) {
+                        array_push($payload, [
+                            'sellerId' => $sellerId,
+                            'userId' => auth('web')->id(),
+                            'orderDetailsId' => $item->id,
+                            'orderId' => $data->id,
+                            'totalAmount' => $amount,
+                            'sellerConnectedAcId' => $userPayACData->id ?? null,
+                            'sellerStripeConnnectedId' => $userPayACData->stripe_connected_account,
+                            'amountPayable' => $this->getPayablePayoutAmount($amount) * 100,
+                            'amountAdmin' => (floatval($amount) - ($this->getPayablePayoutAmount($amount))),
+                            'transfer_group' => $data->order_serial ?? 'N.A',
+                            'seller_description' => "Payment: $" . number_format($this->getPayablePayoutAmount($amount), 2) . " for Order: " . $data->order_serial . " | Product: <a href='" . route('product.view', ['club' => $item->club->slug]) . "'>" . $item->club->slug . "</a>",
+                            'admin_description' => "Payment: Total: $" . number_format($amount, 2) . ". Merchant Payout: $" . $this->getPayablePayoutAmount($amount) . ". Admin Payout: $" . number_format(((floatval($amount) - ($this->getPayablePayoutAmount($amount)))), 2) . " (" . $this->getAdminInterestRate() . "% commison rate) for Order: " . $data->order_serial . " | Product: <a href='" . route('product.view', ['club' => $item->club->slug]) . "'>" . $item->club->slug . "</a>"
+                        ]);
+                    }
+                }
+            }
+        }
+
+        return $payload;
+    }
+
+
+    private function getTotalForEachItem($amount, $noOfDays)
+    {
+        if (!empty($amount) && is_numeric($amount) && !empty($noOfDays) && is_numeric($noOfDays)) {
+            return floatval($amount) * intval($noOfDays);
+        }
+    }
+
     public function createOrderTxnTblData($data)
     {
         try {
@@ -402,5 +460,17 @@ class OrderController extends Controller
         $val = str_replace(",", ".", $val);
         $val = preg_replace('/\.(?=.*\.)/', '', $val);
         return floatval($val);
+    }
+
+    private function getPayablePayoutAmount($amount)
+    {
+        if (!empty($amount) && is_numeric($amount)) {
+            return floatval($amount) - (floatval($amount) * (floatval($this->getAdminInterestRate()) / 100));
+        }
+    }
+
+    private function getAdminInterestRate()
+    {
+        return 5;
     }
 }

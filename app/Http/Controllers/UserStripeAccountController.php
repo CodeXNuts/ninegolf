@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentGateway\Stripe;
+use App\Models\User;
 use App\Models\UserStripeConnectedAccount;
 use Carbon\Carbon;
 use Exception;
@@ -184,8 +185,16 @@ class UserStripeAccountController extends Controller
 
                 $userStripeConnectedAccount->save();
             } catch (\Throwable $th) {
-                dd($th);
+               
             }
+        }
+    }
+
+    public function getUserConnectedStripeAccount($userId)
+    {
+        if(!empty($userId))
+        {
+            return UserStripeConnectedAccount::where(['is_completed'=>true,'is_active'=>true])->select(['id','stripe_connected_account'])->find($userId);
         }
     }
 

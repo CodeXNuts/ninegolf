@@ -33,10 +33,10 @@ class CartController extends Controller
         ]);
 
         try {
-            if (auth()->check()) {
+            if (auth('web')->check()) {
                 $ifItemPresent = Cart::with(['cartItems' => function ($q) use ($request) {
                     $q->where('club_id', $request->club);
-                }])->where(['user_id' => auth()->id()])->first();
+                }])->where(['user_id' => auth('web')->id()])->first();
 
                 if (!empty($ifItemPresent->cartItems->id) && (count($ifItemPresent->cartItems) > 0)) {
                     
@@ -44,19 +44,19 @@ class CartController extends Controller
                         'key' => 'info',
                         'msg' => 'Item already present in your cart',
                         'cnt' => Cart::where([
-                            'user_id' => auth()->id()
+                            'user_id' => auth('web')->id()
                         ])->count()
                     ];
 
                     return $res;
                 } else {
-                    $isCartPresentForThisUser = Cart::where(['user_id' => auth()->id()])->first();
+                    $isCartPresentForThisUser = Cart::where(['user_id' => auth('web')->id()])->first();
 
                     if (!empty($isCartPresentForThisUser->id)) {
                         $cartDetails = $isCartPresentForThisUser;
                     } else {
                         $cartDetails = Cart::create([
-                            'user_id' => auth()->id() ?? null,
+                            'user_id' => auth('web')->id() ?? null,
                         ]);
                     }
                     if (!empty($cartDetails->id)) {
@@ -202,10 +202,10 @@ class CartController extends Controller
     public function getCartCount()
     {
         $crtCnt = 0;
-        if (auth()->check()) {
+        if (auth('web')->check()) {
 
             $crtCnt = Cart::withCount(['cartItems'])->where([
-                'user_id' => auth()->id()
+                'user_id' => auth('web')->id()
             ])->first();
         } else {
             $allCookies = Cookie::get();
@@ -251,15 +251,15 @@ class CartController extends Controller
     public function getCart()
     {
         $crtContents = [];
-        if (auth()->check()) {
-            $crtContents = Cart::with(['cartItems', 'cartItems.clubAddress','club'])->where([
-                'user_id' => auth()->id()
+        if (auth('web')->check()) {
+            $crtContents = Cart::with(['cartItems', 'cartItems.clubAddress','cartItems.club'])->where([
+                'user_id' => auth('web')->id()
             ])->first();
         } else {
             $allCookies = Cookie::get();
 
             if (!empty($allCookies['auth_key'])) {
-                $crtContents = Cart::with(['cartItems', 'cartItems.clubAddress'])->where([
+                $crtContents = Cart::with(['cartItems', 'cartItems.clubAddress','cartItems.club'])->where([
                     'guest_id' => $allCookies['auth_key']
                 ])->first();
             }
@@ -276,11 +276,13 @@ class CartController extends Controller
             foreach ($crtContents->cartItems as $item) {
                 if ($item->club->type == 'set') {
                     array_push($priceArr, [
+                        'club'=>$item->club->id,
                         'name' => Str::title($item->club->set_name),
                         'cost' => !empty($item->club->set_price) ? (number_format(floatval($item->club->set_price) * intval($item->days), 2)) : 0.00
                     ]);
                 } elseif ($item->club->type == 'individual') {
                     array_push($priceArr, [
+                        'club'=>$item->club->id,
                         'name' => Str::title($item->club->clubLists[0]->name),
                         'cost' => !empty($item->club->clubLists[0]->price) ? (number_format(floatval($item->club->clubLists[0]->price) * intval($item->days), 2)) : 0.00
                     ]);

@@ -85,13 +85,13 @@ class AuthenticatedSessionController extends Controller
             if (!empty($crtContents)) {
                 try {
 
-                    $isCartPresentForThisUser = Cart::where(['user_id' => auth()->id()])->first();
+                    $isCartPresentForThisUser = Cart::where(['user_id' => auth('web')->id()])->first();
 
                     if (!empty($isCartPresentForThisUser->id)) {
                         $cartDetails = $isCartPresentForThisUser;
                     } else {
                         $cartDetails = Cart::create([
-                            'user_id' => auth()->id() ?? null,
+                            'user_id' => auth('web')->id() ?? null,
                         ]);
                     }
 
