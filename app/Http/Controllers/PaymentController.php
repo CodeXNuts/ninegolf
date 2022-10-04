@@ -28,4 +28,9 @@ class PaymentController extends Controller
 
         return $res;
     }
+
+    public function payoutToMerchant($payload)
+    {
+       return (new Stripe())->payout($payload);
+    }
 }

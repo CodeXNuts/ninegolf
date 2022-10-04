@@ -68,7 +68,7 @@ class Stripe extends Model
     {
         
         try {
-            // dd($payload['acHolderState']);
+            
             $updatedInfo = (new \Stripe\StripeClient($this->thisKey))->accounts->update(
                 $payload['stripeConnectedAcId'],
                 [
@@ -133,12 +133,23 @@ class Stripe extends Model
         }
     }
 
+    public function payout($payload)
+    {
+        return StripeSDK\Transfer::create([
+            "amount" => floatval($payload['amountPayable']),
+            "currency" => "usd",
+            "destination" => $payload['sellerStripeConnnectedId'] ?? null,
+            'description' => $payload['seller_description'] ?? 'N.A',
+            'transfer_group' => $payload['transfer_group'] ?? 'N.A'
+          ]);
+    }
+
     public function viewConnectedAccount($connectedAcId)
     {
         try {
 
             $connectedAcDetails = (new \Stripe\StripeClient($this->thisKey))->accounts->retrieve($connectedAcId);
-            // dd($connectedAcDetails);
+            
             return [
                 'code' => 200,
                 'data' => $connectedAcDetails
@@ -170,4 +181,5 @@ class Stripe extends Model
             return $hasError;
         }
     }
+    
 }
