@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\WishListController;
 use Illuminate\Support\Facades\Route;
@@ -48,5 +49,7 @@ Route::prefix('cart')->name('cart.')->group(function(){
 
 
 });
+
+Route::get('/search',[SearchController::class,'index'])->name('search');
 
 

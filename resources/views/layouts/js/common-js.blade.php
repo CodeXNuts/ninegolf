@@ -10,6 +10,7 @@
 
 <script src="https://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.js"></script>
 <script src="{{ asset('common/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('user/js/pages/search.js') }}"></script>
 
 <script>
 (function($) { // Begin jQuery
@@ -224,32 +225,32 @@ $(function(){
 
 
 
-$(function() {
-    $('.datepicker').datepicker({
-        dateFormat: "dd-mm-yy",
-        duration: "fast"
-    });
-    $(".datepicker2").datepicker({
-        dateFormat: "dd-mm-yy",
-        duration: "fast"
-    });
-});
+// $(function() {
+//     $('.datepicker').datepicker({
+//         dateFormat: "dd-mm-yy",
+//         duration: "fast"
+//     });
+//     $(".datepicker2").datepicker({
+//         dateFormat: "dd-mm-yy",
+//         duration: "fast"
+//     });
+// });
 
-$(".timepicker").clockpicker({
-    placement: 'bottom',
-    align: 'left',
-    autoclose: true,
-    twelvehour: true,
-    default: 'now',
-    donetext: "Select",
-    init: function() {
+// $(".timepicker").clockpicker({
+//     placement: 'bottom',
+//     align: 'left',
+//     autoclose: true,
+//     twelvehour: true,
+//     default: 'now',
+//     donetext: "Select",
+//     init: function() {
         
-    },
-    afterDone: function() {
-                            // console.log("after done");
-                        }
+//     },
+//     afterDone: function() {
+//                             // console.log("after done");
+//                         }
 
-});
+// });
 $(window).scroll(function() {
     if ($(this).scrollTop() > 250) {
         $('form.form-inline').addClass("sticky");
